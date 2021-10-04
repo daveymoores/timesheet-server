@@ -1,0 +1,22 @@
+{
+  "name": "timesheet-server",
+  "version": "1.0.0",
+  "author": "Davey Moores <daveymoores@gmail.com>",
+  "license": "MIT",
+  "source": "src/routes/index.html",
+  "scripts": {
+    "start": "parcel",
+    "build": "parcel build"
+  },
+  "dependencies": {
+    "autoprefixer": "^10.3.6",
+    "postcss-modules": "^4.2.2"
+  },
+  "devDependencies": {
+    "@parcel/transformer-sass": "2.0.0-rc.0",
+    "parcel": "^2.0.0-rc.0",
+    "posthtml-include": "^1.7.2",
+    "typescript": "^4.4.3"
+  },
+  "browserslist": "> 0.5%, last 2 versions, not dead"
+}

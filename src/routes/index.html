@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<include src="./src/partials/head.html"></include>
+<body>
+<include src="./src/partials/navigation.html"></include>
+<article class="commands">
+    <a href="./timesheet.html">click</a>
+    <header>
+        <h1 class="commands--title">timesheet-gen</h1>
+    </header>
+
+    <section class="commands__code">
+        <h3 class="commands__code--title">Installation</h3>
+        <div class="commands__code--block">
+            <code>
+                > brew install timesheet-gen
+            </code>
+        </div>
+    </section>
+    <section class="commands__code">
+        <h3 class="commands__code--title">Initialise for current directory</h3>
+        <div class="commands__code--block">
+            <code>
+                > timesheet-gen init [run mode: -cb / -d]
+            </code>
+        </div>
+    </section>
+    <section class="commands__code">
+        <h3 class="commands__code--title">Initialise for specified repository</h3>
+        <div class="commands__code--block">
+            <code>
+                > timesheet-gen init /path/to/repo
+            </code>
+        </div>
+    </section>
+    <section class="commands__code">
+        <h3 class="commands__code--title">Edit timesheet for today</h3>
+        <div class="commands__code--block">
+            <code>
+                > timesheet-gen edit -h 5
+            </code>
+        </div>
+    </section>
+    <section class="commands__code">
+        <h3 class="commands__code--title">Remove entry for a specific day</h3>
+        <div class="commands__code--block">
+            <code>
+                > timesheet-gen remove -d 4
+            </code>
+        </div>
+    </section>
+    <section class="commands__code">
+        <h3 class="commands__code--title">Generate timesheet</h3>
+        <div class="commands__code--block">
+            <code>
+                > timesheet-gen make
+            </code>
+        </div>
+    </section>
+    <section class="commands__code">
+        <h3 class="commands__code--title">Generate timesheet for specific month</h3>
+        <div class="commands__code--block">
+            <code>
+                > timesheet-gen make -m 12
+            </code>
+        </div>
+    </section>
+</article>
+<include src="./src/partials/footer.html"></include>
+</body>
+</html>
