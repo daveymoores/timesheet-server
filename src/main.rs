@@ -1,12 +1,16 @@
 extern crate dotenv;
 
 use actix_files::{Files, NamedFile};
-use actix_web::{get, middleware, web, App, Error, HttpRequest, HttpServer};
+use actix_web::http::StatusCode;
+use actix_web::{
+    error, get, guard, middleware, web, App, Error, HttpRequest, HttpResponse, HttpServer,
+};
 use dotenv::dotenv;
 use futures::TryStreamExt;
 use mongodb::options::{ClientOptions, ResolverConfig};
 use mongodb::{bson::doc, options::FindOptions};
 use serde::Deserialize;
+use std::io;
 use std::path::{Path, PathBuf};
 
 // Uses mongodb 1.2.0 as actix-web uses a tokio version of 0.2.x, and mongodb crate
@@ -18,7 +22,9 @@ async fn index(_req: HttpRequest) -> Result<NamedFile, Error> {
     Ok(NamedFile::open(path)?)
 }
 
-async fn find_record_from_random_string(path: &String) -> Result<(), Box<dyn std::error::Error>> {
+async fn find_record_from_random_string(
+    path: &String,
+) -> Result<NamedFile, Box<dyn std::error::Error>> {
     dotenv().ok();
 
     // get the client uri
@@ -37,15 +43,19 @@ async fn find_record_from_random_string(path: &String) -> Result<(), Box<dyn std
         .collection("timesheet-temp-paths");
 
     let filter = doc! { "random_path": &path };
-    println!("{:#?}", filter);
-    let document = collection
-        .find_one(filter, None)
-        .await?
-        .expect("Missing document");
 
-    println!("{:#?}", document);
+    let document = collection.find_one(filter, None).await?;
 
-    Ok(())
+    match document {
+        None => {
+            let path: PathBuf = Path::new(env!("CARGO_MANIFEST_DIR")).join("dist/404.html");
+            Ok(NamedFile::open(path)?.set_status_code(StatusCode::NOT_FOUND))
+        }
+        Some(_) => {
+            let path: PathBuf = Path::new(env!("CARGO_MANIFEST_DIR")).join("dist/timesheet.html");
+            Ok(NamedFile::open(path)?)
+        }
+    }
 }
 
 #[derive(Deserialize)]
@@ -56,13 +66,15 @@ struct Info {
 #[get("/{timesheet}")]
 async fn timesheet(info: web::Path<Info>) -> Result<NamedFile, Error> {
     println!("hello timesheet");
-    find_record_from_random_string(&info.timesheet)
+    let named_file = find_record_from_random_string(&info.timesheet)
         .await
-        .unwrap_or_else(|err| {
-            eprintln!("Error fetching from mongodb: {}", err);
-        });
-    let path: PathBuf = Path::new(env!("CARGO_MANIFEST_DIR")).join("dist/timesheet.html");
-    Ok(NamedFile::open(path)?)
+        .expect("Failed to fetch record from mongodb");
+    Ok(named_file)
+}
+
+async fn p404() -> Result<NamedFile, Error> {
+    let path: PathBuf = Path::new(env!("CARGO_MANIFEST_DIR")).join("dist/404.html");
+    Ok(NamedFile::open(path)?.set_status_code(StatusCode::NOT_FOUND))
 }
 
 #[actix_web::main]
@@ -73,10 +85,22 @@ async fn main() -> std::io::Result<()> {
 
     HttpServer::new(|| {
         App::new()
-            // .wrap(middleware::Logger::default())
+            .wrap(middleware::Logger::default())
             .service(index)
             .service(timesheet)
-            .service(Files::new("/", "./dist/"))
+            .service(Files::new("./dist", "/"))
+            // default
+            .default_service(
+                // 404 for GET request
+                web::resource("")
+                    .route(web::get().to(p404))
+                    // all requests that are not `GET`
+                    .route(
+                        web::route()
+                            .guard(guard::Not(guard::Get()))
+                            .to(HttpResponse::MethodNotAllowed),
+                    ),
+            )
     })
     .bind("127.0.0.1:8080")?
     .run()
