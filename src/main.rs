@@ -1,6 +1,7 @@
 extern crate dotenv;
 
 use actix_files::{Files, NamedFile};
+use actix_web::guard::Guard;
 use actix_web::http::StatusCode;
 use actix_web::{
     error, get, guard, middleware, web, App, Error, HttpRequest, HttpResponse, HttpServer,
@@ -60,13 +61,13 @@ async fn find_record_from_random_string(
 
 #[derive(Deserialize)]
 struct Info {
-    timesheet: String,
+    identifier: String,
 }
 
-#[get("/{timesheet}")]
+#[get("/{identifier:\\w+$}")]
 async fn timesheet(info: web::Path<Info>) -> Result<NamedFile, Error> {
-    println!("hello timesheet");
-    let named_file = find_record_from_random_string(&info.timesheet)
+    println!("info: {:#?}", info.identifier);
+    let named_file = find_record_from_random_string(&info.identifier)
         .await
         .expect("Failed to fetch record from mongodb");
     Ok(named_file)
@@ -88,7 +89,7 @@ async fn main() -> std::io::Result<()> {
             .wrap(middleware::Logger::default())
             .service(index)
             .service(timesheet)
-            .service(Files::new("./dist", "/"))
+            .service(Files::new("/", "./dist/"))
             // default
             .default_service(
                 // 404 for GET request
