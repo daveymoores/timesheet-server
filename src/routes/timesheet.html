@@ -5,7 +5,7 @@
 <include src="./src/partials/navigation.html"></include>
 <article class="timesheet">
     <header>
-        <h1 class="timesheet--title">Timesheet: September</h1>
+        <h1 class="timesheet--title">Timesheet: {{creation_date}}</h1>
     </header>
 
     <div class="timesheet--row">
@@ -14,15 +14,13 @@
                 <p>Client:</p>
             </div>
             <div class="timesheet__cell">
-                <p>Alphabet Inc.</p>
+                <p>{{client_name}}</p>
             </div>
             <div class="timesheet__cell">
-                <p>miles@alphabet.com</p>
+                <p>{{client_contact_person}}</p>
             </div>
             <div class="timesheet__cell">
-                <p>Clientstraat 406<br>
-                    Amsterdam<br>
-                    0000RT<br></p>
+                {{address}}
             </div>
         </div>
 
