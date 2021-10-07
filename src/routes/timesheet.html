@@ -13,37 +13,51 @@
             <div class="timesheet__cell timesheet__cell--title">
                 <p>Client:</p>
             </div>
+            {{#if client_name}}
             <div class="timesheet__cell">
                 <p>{{client_name}}</p>
             </div>
+            {{/if}}
+            {{#if client_contact_person}}
             <div class="timesheet__cell">
                 <p>{{client_contact_person}}</p>
             </div>
+            {{/if}}
+            {{#if address}}
             <div class="timesheet__cell">
                 {{address}}
             </div>
+            {{/if}}
         </div>
 
         <div class="timesheet__cell-group">
             <div class="timesheet__cell timesheet__cell--title">
                 Contractor:
             </div>
+            {{#if name}}
             <div class="timesheet__cell">
-                David Jonathan Moores
+                {{name}}
             </div>
+            {{/if}}
+            {{#if email}}
             <div class="timesheet__cell">
-                daveymoores@gmail.com
+                {{email}}
             </div>
+            {{/if}}
         </div>
     </div>
 
     <div class="timesheet__cell-group">
+        {{#if namespace}}
         <div class="timesheet__cell timesheet__cell--title">
-            Project: This is a project name
+            Project: {{namespace}}
         </div>
+        {{/if}}
+        {{#if project_number}}
         <div class="timesheet__cell timesheet__cell--title">
-            Project number: 1234
+            Project number: {{project_number}}
         </div>
+        {{/if}}
     </div>
 
     <div class="timesheet__table">
@@ -53,188 +67,18 @@
             </div>
             <div class="timesheet__table--container">
                 <div class="timesheet__table--row">
+                    {{#each timesheet.2021.Sep}}
                     <div class="timesheet__table--cell">
-                        1
+                        {{@key}}
                     </div>
-                    <div class="timesheet__table--cell">
-                        2
-                    </div>
-                    <div class="timesheet__table--cell">
-                        3
-                    </div>
-                    <div class="timesheet__table--cell">
-                        4
-                    </div>
-                    <div class="timesheet__table--cell">
-                        5
-                    </div>
-                    <div class="timesheet__table--cell">
-                        6
-                    </div>
-                    <div class="timesheet__table--cell">
-                        7
-                    </div>
-                    <div class="timesheet__table--cell">
-                        8
-                    </div>
-                    <div class="timesheet__table--cell">
-                        9
-                    </div>
-                    <div class="timesheet__table--cell">
-                        10
-                    </div>
-                    <div class="timesheet__table--cell">
-                        11
-                    </div>
-                    <div class="timesheet__table--cell">
-                        12
-                    </div>
-                    <div class="timesheet__table--cell">
-                        13
-                    </div>
-                    <div class="timesheet__table--cell">
-                        14
-                    </div>
-                    <div class="timesheet__table--cell">
-                        15
-                    </div>
-                    <div class="timesheet__table--cell">
-                        16
-                    </div>
-                    <div class="timesheet__table--cell">
-                        17
-                    </div>
-                    <div class="timesheet__table--cell">
-                        18
-                    </div>
-                    <div class="timesheet__table--cell">
-                        19
-                    </div>
-                    <div class="timesheet__table--cell">
-                        20
-                    </div>
-                    <div class="timesheet__table--cell">
-                        21
-                    </div>
-                    <div class="timesheet__table--cell">
-                        22
-                    </div>
-                    <div class="timesheet__table--cell">
-                        23
-                    </div>
-                    <div class="timesheet__table--cell">
-                        24
-                    </div>
-                    <div class="timesheet__table--cell">
-                        25
-                    </div>
-                    <div class="timesheet__table--cell">
-                        26
-                    </div>
-                    <div class="timesheet__table--cell">
-                        27
-                    </div>
-                    <div class="timesheet__table--cell">
-                        28
-                    </div>
-                    <div class="timesheet__table--cell">
-                        29
-                    </div>
-                    <div class="timesheet__table--cell">
-                        30
-                    </div>
+                    {{/each}}
                 </div>
                 <div class="timesheet__table--row">
+                    {{#each timesheet.2021.Sep}}
                     <div class="timesheet__table--cell timesheet__table--cell-hour">
-                        8
+                        {{this.hours}}
                     </div>
-                    <div class="timesheet__table--cell timesheet__table--cell-hour">
-                        8
-                    </div>
-                    <div class="timesheet__table--cell timesheet__table--cell-hour">
-                        8
-                    </div>
-                    <div class="timesheet__table--cell timesheet__table--cell-hour">
-                        8
-                    </div>
-                    <div class="timesheet__table--cell timesheet__table--cell-hour">
-                        8
-                    </div>
-                    <div class="timesheet__table--cell timesheet__table--cell-weekend">
-                        8
-                    </div>
-                    <div class="timesheet__table--cell timesheet__table--cell-weekend">
-                        8
-                    </div>
-                    <div class="timesheet__table--cell timesheet__table--cell-hour">
-                        8
-                    </div>
-                    <div class="timesheet__table--cell timesheet__table--cell-hour">
-                        8
-                    </div>
-                    <div class="timesheet__table--cell timesheet__table--cell-hour">
-                        8
-                    </div>
-                    <div class="timesheet__table--cell timesheet__table--cell-hour">
-                        8
-                    </div>
-                    <div class="timesheet__table--cell timesheet__table--cell-hour">
-                        8
-                    </div>
-                    <div class="timesheet__table--cell timesheet__table--cell-weekend">
-                        8
-                    </div>
-                    <div class="timesheet__table--cell timesheet__table--cell-weekend">
-                        8
-                    </div>
-                    <div class="timesheet__table--cell timesheet__table--cell-hour">
-                        8
-                    </div>
-                    <div class="timesheet__table--cell timesheet__table--cell-hour">
-                        8
-                    </div>
-                    <div class="timesheet__table--cell timesheet__table--cell-hour">
-                        8
-                    </div>
-                    <div class="timesheet__table--cell timesheet__table--cell-hour">
-                        8
-                    </div>
-                    <div class="timesheet__table--cell timesheet__table--cell-hour">
-                        8
-                    </div>
-                    <div class="timesheet__table--cell timesheet__table--cell-weekend">
-                        8
-                    </div>
-                    <div class="timesheet__table--cell timesheet__table--cell-weekend">
-                        8
-                    </div>
-                    <div class="timesheet__table--cell timesheet__table--cell-hour">
-                        8
-                    </div>
-                    <div class="timesheet__table--cell timesheet__table--cell-hour">
-                        8
-                    </div>
-                    <div class="timesheet__table--cell timesheet__table--cell-hour">
-                        8
-                    </div>
-                    <div class="timesheet__table--cell timesheet__table--cell-hour">
-                        8
-                    </div>
-                    <div class="timesheet__table--cell timesheet__table--cell-hour">
-                        8
-                    </div>
-                    <div class="timesheet__table--cell timesheet__table--cell-weekend">
-                        8
-                    </div>
-                    <div class="timesheet__table--cell timesheet__table--cell-weekend">
-                        8
-                    </div>
-                    <div class="timesheet__table--cell timesheet__table--cell-hour">
-                        8
-                    </div>
-                    <div class="timesheet__table--cell timesheet__table--cell-hour">
-                        8
-                    </div>
+                    {{/each}}
                 </div>
             </div>
             <div class="timesheet__cell timesheet__cell--title">
