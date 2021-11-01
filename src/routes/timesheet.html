@@ -67,26 +67,30 @@
             </div>
             <div class="timesheet__table--container">
                 <div class="timesheet__table--row">
-                    {{#each timesheet.2021.Sep}}
+                    {{#each timesheet}}
                     <div class="timesheet__table--cell">
-                        {{@key}}
+                        {{increment_index @index}}
                     </div>
                     {{/each}}
                 </div>
                 <div class="timesheet__table--row">
-                    {{#each timesheet.2021.Sep}}
-                    <div class="timesheet__table--cell timesheet__table--cell-hour">
-                        {{this.hours}}
+                    {{#each timesheet}}
+                    {{#if this.weekend}}
+                    <div class="timesheet__table--cell timesheet__table--cell-weekend">
+                        {{else}}
+                        <div class="timesheet__table--cell timesheet__table--cell-hour">
+                            {{/if}}
+                            {{this.hours}}
+                        </div>
+                        {{/each}}
                     </div>
-                    {{/each}}
+                </div>
+                <div class="timesheet__cell timesheet__cell--title">
+                    Total hours: 160
                 </div>
             </div>
-            <div class="timesheet__cell timesheet__cell--title">
-                Total hours: 160
-            </div>
-        </div>
 
-    </div>
+        </div>
 </article>
 <include src="./src/partials/footer.html"></include>
 </body>

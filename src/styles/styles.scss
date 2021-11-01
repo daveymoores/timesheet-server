@@ -189,10 +189,12 @@ body {
       &-weekend {
         @media (prefers-color-scheme: dark) {
           background-color: var(--lightGreen);
+          color: var(--darkGrey);
         }
 
         @media (prefers-color-scheme: light) {
           background-color: var(--darkGrey);
+          color: var(--lightGreen);
         }
       }
     }

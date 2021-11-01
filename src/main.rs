@@ -8,9 +8,10 @@ use mongodb::bson::{self, doc, Bson, Document};
 use mongodb::options::{ClientOptions, ResolverConfig};
 use std::path::{Path, PathBuf};
 
-use handlebars::Handlebars;
+use handlebars::{Context, Handlebars, Helper, Output, RenderContext, RenderError};
 use serde::{Deserialize, Serialize};
-use serde_json::{self, json, Map, Value};
+use serde_json::{self, json};
+use std::collections::HashMap;
 
 // Uses mongodb 1.2.0 as actix-web uses a tokio version of 0.2.x, and mongodb crate
 // upgrades to tokio 1.2.0 which is incompatible
@@ -30,7 +31,6 @@ struct Timesheet {
     name: String,
     email: String,
     namespace: String,
-    path: String,
     client_name: String,
     client_contact_person: String,
     address: String,
@@ -90,7 +90,7 @@ async fn timesheet(info: web::Path<Info>, hb: web::Data<Handlebars<'_>>) -> Http
         Some(doc) => {
             let sheet: Timesheet = bson::from_bson(Bson::Document(doc))
                 .expect("Couldn't parse Timesheet struct from document");
-            let timesheet_json: Map<String, Value> = serde_json::from_str(&sheet.timesheet)
+            let timesheet_json: Vec<HashMap<String, i32>> = serde_json::from_str(&sheet.timesheet)
                 .expect("Couldn't parse timesheet json from document");
 
             let data = json!({
@@ -100,7 +100,6 @@ async fn timesheet(info: web::Path<Info>, hb: web::Data<Handlebars<'_>>) -> Http
                 "name": sheet.name,
                 "email": sheet.email,
                 "namespace": sheet.namespace,
-                "path": sheet.path,
                 "client_name": sheet.client_name,
                 "client_contact_person": sheet.client_contact_person,
                 "address": sheet.address,
@@ -118,6 +117,22 @@ async fn p404() -> Result<NamedFile, Error> {
     Ok(NamedFile::open(path)?.set_status_code(StatusCode::NOT_FOUND))
 }
 
+fn increment_index(
+    h: &Helper,
+    _: &Handlebars,
+    _: &Context,
+    _: &mut RenderContext,
+    out: &mut dyn Output,
+) -> Result<(), RenderError> {
+    let v = h
+        .param(0)
+        .map(|v| v.value())
+        .ok_or(RenderError::new("param not found"));
+    let value = v.unwrap().as_u64().unwrap() + 1 as u64;
+    out.write(&*value.to_string())?;
+    Ok(())
+}
+
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     dotenv().ok();
@@ -125,6 +140,7 @@ async fn main() -> std::io::Result<()> {
     env_logger::init();
 
     let mut handlebars = Handlebars::new();
+    handlebars.register_helper("increment_index", Box::new(increment_index));
     handlebars
         .register_templates_directory(".html", "./dist")
         .unwrap();

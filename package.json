@@ -6,7 +6,8 @@
   "source": "src/routes/index.html",
   "scripts": {
     "start": "parcel",
-    "build": "parcel build"
+    "build": "parcel build",
+    "run": "cargo run"
   },
   "dependencies": {
     "autoprefixer": "^10.3.6",
